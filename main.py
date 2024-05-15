@@ -9,17 +9,19 @@ def rand_number():
     global balance, selected_color, bet
     if selected_color:
         number  =  random.randint(0, 36, )
-        label["text"] = ("black", "red")[number % 2]
-        if selected_color == label["text"]:
-            balance += bet * 2
+        label["text"] = f"Выпал: {("black", "red")[number % 2]}"
+        if f"Выпал: {selected_color}" == label["text"]:
+            balance += bet * 2 
+            label["text"] += "\n WIN" 
+
         # else:
         #     balance -= bet
         balance_label['text'] = f'Ваш баланс: {balance}'
         bet =  0 
-        bet_label['text'] = f"Ваша ствка {bet}"
+        bet_label['text'] = f"Ваша ствка: {bet}"
 def change_color():
     global selected_color
-    color_label["text"] = selected_color
+    color_label["text"] = f"Ваш цвет: {selected_color}"
     color_label["fg"] = selected_color
 def black():
     global selected_color
@@ -52,8 +54,8 @@ window.configure(bg= "#2D572C")
 # background_lable.place(x = 0, y = 0)
 start_button = tk.Button(window, text = "start", command = rand_number, bg= "#ffdf33", width = 15, height= 5, font=("Arial", 15))
 start_button.place(x = 555, y = 0)
-label = tk.Label(window, text = "Нажмите старт", bg= "#ffdf33", font= ("Arial", 15))
-label.place(x  =600, y = 100)
+label = tk.Label(window, text = "Нажмите старт", bg= "#2D572C", font= ("Arial", 15))
+label.place(x  =250, y = 0)
 balance_label = tk.Label(window, text = f'Ваш баланс: {balance}', bg = "#2D572C", font = ('arial', 15))
 balance_label.pack(anchor='nw')
 casino_wheel = tk.PhotoImage(file= "img/wheel.png")
