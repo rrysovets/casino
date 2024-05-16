@@ -1,33 +1,41 @@
 import tkinter as tk
 import random
-from animate_img import SimpleApp
+from animate_img import Wheel
 balance = 1000
 selected_color = None
 bet = 0
 window = tk.Tk()
+def set_default_settings():
+    global balance, selected_color, bet
+    balance_label['text'] = f'Ваш баланс: {balance}'
+    bet =  0 
+    bet_label['text'] = f"Ваша ствка: {bet}"
+    selected_color = None
+    select_color_label["text"] = "Ввыберите цвет"
+    select_color_label["fg"]="black"
+    
 def rand_number():
     global balance, selected_color, bet
-    if selected_color:
-        number  =  random.randint(0, 36, )
-        label["text"] = f"Выпал: {("black", "red")[number % 2]}"
-        if f"Выпал: {selected_color}" == label["text"]:
+    if selected_color and bet>0:
+        random_number  =  random.randint(0, 36)
+        current_color =("black", "red")[random_number % 2]
+        label["text"] = f"Выпал: {current_color}"
+        if selected_color == current_color:
             balance += bet * 2 
             label["text"] += "\n WIN" 
+        set_default_settings()
+        app.rotate()
 
-        # else:
-        #     balance -= bet
-        balance_label['text'] = f'Ваш баланс: {balance}'
-        bet =  0 
-        bet_label['text'] = f"Ваша ствка: {bet}"
+
 def change_color():
     global selected_color
-    color_label["text"] = f"Ваш цвет: {selected_color}"
-    color_label["fg"] = selected_color
-def black():
+    select_color_label["text"] = f"Ваш цвет: {selected_color}"
+    select_color_label["fg"] = selected_color
+def select_black():
     global selected_color
     selected_color = "black"
     change_color()
-def red():
+def select_red():
     global selected_color
     selected_color = "red"
     change_color()
@@ -65,14 +73,14 @@ casino_wheel.configure
 casino_table = tk.PhotoImage(file= "img/table.png")
 table_label = tk.Label(window, image= casino_table, bg= "#2D572C")
 table_label.place(x  = 800, y = 15)
-button_red = tk.Button(window, bg = "#ff0000", command = red)
+button_red = tk.Button(window, bg = "#ff0000", command = select_red)
 button_red.place(x = 825, y = 310)
-button_black = tk.Button(window, bg = "#000000", command = black)
+button_black = tk.Button(window, bg = "#000000", command = select_black)
 button_black.place(x = 825, y = 400)
 bet_label = tk.Label(window, text = f"Ваша ствка: {bet}", bg = "#2D572C", font = ('arial', 15))
 bet_label.pack(anchor='nw')
-color_label = tk.Label(window, text = "Ввыберите цвет", font = ('arial', 15), bg = "#2D572C")
-color_label.pack(anchor='nw')
-app = SimpleApp(window, "img/wheel.png")
+select_color_label = tk.Label(window, text = "Ввыберите цвет", font = ('arial', 15), bg = "#2D572C")
+select_color_label.pack(anchor='nw')
+app = Wheel(window)
 window.title("CASINO")
 window.mainloop()

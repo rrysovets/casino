@@ -1,24 +1,26 @@
-import time
 import tkinter
 from PIL import Image, ImageTk
-class SimpleApp(object):
-    def __init__(self, master, filename, **kwargs):
-        self.master = master
-        self.filename = filename
-        self.canvas = tkinter.Canvas(master, width=400, height=400,  bg= "#2D572C", highlightthickness= 0)
-        self.canvas.place(x=169,y=249)
-        self.process_next_frame = self.draw().__next__  # Using "next(self.draw())" doesn't work
-        master.after(1, self.process_next_frame)
-    def draw(self):
-        image = Image.open(self.filename)
-        angle = 0
-        print(self.process_next_frame)
-        while True:
-            tkimage = ImageTk.PhotoImage(image.rotate(angle))
-            canvas_obj = self.canvas.create_image(200, 200, image=tkimage)
-            self.master.after_idle(self.process_next_frame)
-            yield
-            self.canvas.delete(canvas_obj)
-            angle += 1
-            angle %= 360
-            time.sleep(0.002)
+counter = 1
+
+class Wheel(object):
+    counter =0
+    def __init__(self,window):
+        self.window = window
+        self.image = Image.open('img/wheel.png')
+        self.tkimage = ImageTk.PhotoImage(self.image)
+        self.label = tkinter.Label(self.window, image=self.tkimage)
+        self.label.configure(bg='#2D572C')
+        self.label.place(x=300,y=250)
+        
+    
+    def rotate(self):
+        global image, tkimage
+        image = Image.open('img/wheel.png')
+        image = image.rotate(self.counter)
+        tkimage = ImageTk.PhotoImage(image)
+        self.label.configure(image=tkimage,)
+        self.counter += 1
+        self.counter %= 360
+        if self.counter<120:
+            self.window.after(10, self.rotate)
+        
